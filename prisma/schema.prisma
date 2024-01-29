@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ตาราง พนักงาน
+model Employee {
+  id       Int     @id @default(autoincrement())
+  name     String?
+  position String
+  phone    String?
+  address  String
+  username String  @unique
+  password String
+  sales    Sale[]
+}
+
+// ตาราง การขายสินค้า
+model Sale {
+  id          Int           @id @default(autoincrement())
+  seledate    DateTime
+  total       Int           @default(10)
+  discount    Int?
+  member      Member        @relation(fields: [memberId], references: [id])
+  memberId    Int           @map("member_id")
+  employee    Employee      @relation(fields: [employeeId], references: [id])
+  employeeId  Int           @map("employee_id")
+  Sale_Detail Sale_Detail[]
+}
+
+// ตาราง สมาชิก
+model Member {
+  id    Int     @id @default(autoincrement())
+  name  String?
+  phone String?
+  point Int?
+  Sale  Sale[]
+}
+
+//ตารางรายละเอียดการขาย
+model Sale_Detail {
+  id         Int      @id @default(autoincrement())
+  detail     String
+  sale       Sale     @relation(fields: [saleId], references: [id])
+  saleId     Int      @map("sale_id")
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  medicineId Int      @map("medicine_id")
+  Amount     Int      @default(10)
+}
+
+// ตาราง ยา
+model Medicine {
+  id          Int           @id @default(autoincrement())
+  name        String?
+  detail      String
+  price       Float
+  stock       String
+  unit        Int           @default(50)
+  Sale_Detail Sale_Detail[]
+}
