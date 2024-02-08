@@ -10,38 +10,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ตาราง พนักงาน
-model Employee {
-  id       Int     @id @default(autoincrement())
+enum Role {
+  USER
+  ADMIN
+}
+
+// ตาราง ลูกค้า
+model User {
+  id       Int      @id @default(autoincrement())
+  role     Role     @default(USER)
   name     String?
-  position String
-  phone    String?
+  lname String
   address  String
-  username String  @unique
+  phone    String?
+  email    String
+  username String   @unique
   password String
-  sales    Sale[]
+  Member   Member[]
 }
 
 // ตาราง การขายสินค้า
 model Sale {
-  id          Int           @id @default(autoincrement())
-  seledate    DateTime
-  total       Int           @default(10)
-  discount    Int?
-  member      Member        @relation(fields: [memberId], references: [id])
-  memberId    Int           @map("member_id")
-  employee    Employee      @relation(fields: [employeeId], references: [id])
-  employeeId  Int           @map("employee_id")
-  Sale_Detail Sale_Detail[]
+  id           Int           @id @default(autoincrement())
+  date         DateTime
+  total        Int           @default(10)
+  discount     Int?
+  member       Member        @relation(fields: [memberId], references: [id])
+  memberId     Int           @map("member_id")
+  Sale_Details Sale_Detail[]
 }
 
 // ตาราง สมาชิก
 model Member {
-  id    Int     @id @default(autoincrement())
-  name  String?
-  phone String?
-  point Int?
-  Sale  Sale[]
+  id     Int     @id @default(autoincrement())
+  name   String?
+  phone  String?
+  point  Int?
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int     @map("user_id")
+  Sales  Sale[]
 }
 
 //ตารางรายละเอียดการขาย
@@ -57,11 +64,11 @@ model Sale_Detail {
 
 // ตาราง ยา
 model Medicine {
-  id          Int           @id @default(autoincrement())
-  name        String?
-  detail      String
-  price       Float
-  stock       String
-  unit        Int           @default(50)
-  Sale_Detail Sale_Detail[]
+  id           Int           @id @default(autoincrement())
+  name         String?
+  detail       String
+  price        Float
+  stock        String
+  unit         Int           @default(50)
+  Sale_Details Sale_Detail[]
 }
