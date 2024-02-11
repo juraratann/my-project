@@ -5,7 +5,7 @@ CREATE TABLE `User` (
     `name` VARCHAR(191) NULL,
     `lname` VARCHAR(191) NOT NULL,
     `address` VARCHAR(191) NOT NULL,
-    `phone` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,

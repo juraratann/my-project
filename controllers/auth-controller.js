@@ -3,29 +3,29 @@ const jwt = require('jsonwebtoken')
 const db = require("../models/db");
 
 exports.register = async (req, res, next) => {
-  const { username, password, email } = req.body;
+  const { name, lname, address,phone,email,username, password, confirmPassword } = req.body;
   try {
     // validation
-    if (!(username && password)) {
+    if (!(username && password )) {
       return next(new Error("Fulfill all inputs"));
     }
     if (confirmPassword !== password) {
-      throw new Error("password not match");
+      throw new Error(" password not match");
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 8);
     console.log(hashedPassword);
     const data = {
       name,
       lname,
-      phone,
       address,
+      phone,
       email,
       username,
-      password: hashedPassword,
+      password : hashedPassword,
     };
 
-    const rs = await db.employee.create({ data  })
+    const rs = await db.user.create({ data  })
     console.log(rs)
 
     res.json({ msg: 'Register successful' })
@@ -42,14 +42,14 @@ exports.login = async (req, res, next) => {
       throw new Error('username or password must not blank')
     }
     // find username in db.user
-    const employee = await db.employee.findFirstOrThrow({ where : { username }})
+    const user = await db.user.findFirstOrThrow({ where : { username }})
     // check password
-    const pwOk = await bcrypt.compare(password, employee.password)
+    const pwOk = await bcrypt.compare(password, user.password)
     if(!pwOk) {
       throw new Error('invalid login')
     }
     // issue jwt token 
-    const payload = { id: employee.id }
+    const payload = { id: user.id }
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: '30d'
     })
@@ -61,5 +61,5 @@ exports.login = async (req, res, next) => {
 };
 
 exports.getme = (req,res,next) => {
-  res.json(req.employee)
+  res.json(req.user)
 }

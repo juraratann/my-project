@@ -1,35 +1,26 @@
 const bcrypt = require("bcryptjs");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const {PrismaClient} = require('@prisma/client')
+const prisma = new PrismaClient()
 
 const password = bcrypt.hashSync("123456");
 
-const employeeData = [
+const userData = [
   {
     name: "jurarat",
-    position: "ผู้จัดการ",
-    phone: "0626922817",
+    lname: "pakkaranung",
     address: "มหาสารคาม",
+    phone: "0626922817",
     email: "annyanny015@gmail.com",
     username: "anny",
     password,
   },
   {
     name: "phongphorn",
-    position: "ฝ่ายขาย",
-    phone: "0823145690",
+    lname: "angboonta",
     address: "กาฬสินธุ์",
+    phone: "0823145690",
     email: "big110@gmail.com",
     username: "big",
-    password,
-  },
-  {
-    name: "caty",
-    position: "ฝ่ายจัดการยา",
-    phone: "0930457889",
-    address: "ขอนแก่น",
-    email: "cat123@gmail.com",
-    username: "cat",
     password,
   },
 ];
@@ -63,8 +54,8 @@ const medicineData = [
 
 const run = async () => {
   try {
-    await prisma.employee.createMany({
-      data: employeeData,
+    await prisma.user.createMany({
+      data: userData,
     });
 
     await prisma.sale.createMany({
@@ -74,14 +65,14 @@ const run = async () => {
           total: 100,
           discount: 10,
           memberId: 1,
-          employeeId: 1,
+          userId: 1,
         },
         {
           date: new Date("2024-02-01T17:54:39.351Z"),
           total: 200,
           discount: 20,
           memberId: 2,
-          employeeId: 2,
+          userId: 2,
         },
       ],
     });
