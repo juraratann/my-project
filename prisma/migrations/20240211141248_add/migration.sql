@@ -59,6 +59,27 @@ CREATE TABLE `Medicine` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Order` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `medicine_id` INTEGER NOT NULL,
+    `user_id` INTEGER NOT NULL,
+    `payment_id` INTEGER NOT NULL,
+    `amount` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Payment` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `creditcard` INTEGER NOT NULL,
+    `netbanking` INTEGER NOT NULL,
+    `promptpay` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Sale` ADD CONSTRAINT `Sale_member_id_fkey` FOREIGN KEY (`member_id`) REFERENCES `Member`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -70,3 +91,12 @@ ALTER TABLE `Sale_Detail` ADD CONSTRAINT `Sale_Detail_sale_id_fkey` FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE `Sale_Detail` ADD CONSTRAINT `Sale_Detail_medicine_id_fkey` FOREIGN KEY (`medicine_id`) REFERENCES `Medicine`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Order` ADD CONSTRAINT `Order_medicine_id_fkey` FOREIGN KEY (`medicine_id`) REFERENCES `Medicine`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Order` ADD CONSTRAINT `Order_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Order` ADD CONSTRAINT `Order_payment_id_fkey` FOREIGN KEY (`payment_id`) REFERENCES `Payment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

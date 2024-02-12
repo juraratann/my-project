@@ -17,16 +17,18 @@ enum Role {
 
 // ตาราง ลูกค้า
 model User {
-  id       Int      @id @default(autoincrement())
-  role     Role     @default(USER)
+  id       Int        @id @default(autoincrement())
+  role     Role       @default(USER)
   name     String?
   lname    String
   address  String
   phone    String
   email    String
-  username String   @unique
+  username String     @unique
   password String
   Member   Member[]
+  Order    Order[]
+  Medicine Medicine[]
 }
 
 // ตาราง การขายสินค้า
@@ -70,5 +72,27 @@ model Medicine {
   price        Float
   stock        String
   unit         Int           @default(50)
+  user         User          @relation(fields: [userId], references: [id])
+  userId       Int           @map("user_id")
   Sale_Details Sale_Detail[]
+  Order        Order[]
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  medicineId Int      @map("medicine_id")
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int      @map("user_id")
+  payment    Payment  @relation(fields: [paymentId], references: [id])
+  paymentId  Int      @map("payment_id")
+  amount     Int
+}
+
+model Payment {
+  id         Int     @id @default(autoincrement())
+  creditcard Int
+  netbanking Int
+  promptpay  Int
+  Order      Order[]
 }
