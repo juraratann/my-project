@@ -17,18 +17,20 @@ enum Role {
 
 // ตาราง ลูกค้า
 model User {
-  id       Int        @id @default(autoincrement())
-  role     Role       @default(USER)
+  id       Int       @id @default(autoincrement())
+  role     Role      @default(USER)
   name     String?
   lname    String
   address  String
   phone    String
   email    String
-  username String     @unique
+  username String    @unique
   password String
   Member   Member[]
   Order    Order[]
-  Medicine Medicine[]
+  Product  Product[]
+
+  @@map("users")
 }
 
 // ตาราง การขายสินค้า
@@ -55,44 +57,44 @@ model Member {
 
 //ตารางรายละเอียดการขาย
 model Sale_Detail {
-  id         Int      @id @default(autoincrement())
-  detail     String
-  sale       Sale     @relation(fields: [saleId], references: [id])
-  saleId     Int      @map("sale_id")
-  medicine   Medicine @relation(fields: [medicineId], references: [id])
-  medicineId Int      @map("medicine_id")
-  Amount     Int      @default(10)
+  id        Int     @id @default(autoincrement())
+  detail    String
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  saleId    Int     @map("sale_id")
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int     @map("product_id")
+  Amount    Int     @default(10)
 }
 
-// ตาราง ยา
-model Medicine {
+model Product {
   id           Int           @id @default(autoincrement())
   name         String?
   detail       String
-  price        Float
+  price        Int
   stock        String
-  unit         Int           @default(50)
   user         User          @relation(fields: [userId], references: [id])
   userId       Int           @map("user_id")
   Sale_Details Sale_Detail[]
   Order        Order[]
+
+  @@map("products")
 }
 
 model Order {
-  id         Int      @id @default(autoincrement())
-  medicine   Medicine @relation(fields: [medicineId], references: [id])
-  medicineId Int      @map("medicine_id")
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int      @map("user_id")
-  payment    Payment  @relation(fields: [paymentId], references: [id])
-  paymentId  Int      @map("payment_id")
-  amount     Int
+  id        Int     @id @default(autoincrement())
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int     @map("product_id")
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int     @map("user_id")
+  payment   Payment @relation(fields: [paymentId], references: [id])
+  paymentId Int     @map("payment_id")
+  amount    Int
 }
 
 model Payment {
-  id         Int     @id @default(autoincrement())
-  creditcard Int
-  netbanking Int
-  promptpay  Int
-  Order      Order[]
+  id        Int      @id @default(autoincrement())
+  amount    Int
+  date      DateTime
+  promptpay Int
+  Order     Order[]
 }
