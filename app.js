@@ -15,6 +15,9 @@ app.use(express.json())
 // service
 app.use('/auth', authRoute)
 app.use('/product', productRoute)
+// app.use('/useronly', (req, res, next) => {
+//     res.json({msg: 'Private area'})
+// })
 
 // notFound
 app.use( notFound )

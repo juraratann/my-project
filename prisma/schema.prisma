@@ -68,10 +68,10 @@ model Sale_Detail {
 
 model Product {
   id           Int           @id @default(autoincrement())
-  name         String?
-  detail       String
+  name         String        @db.VarChar(200)
+  detail       String        @db.VarChar(200)
   price        Int
-  stock        String
+  stock        String        @db.VarChar(200)
   user         User          @relation(fields: [userId], references: [id])
   userId       Int           @map("user_id")
   Sale_Details Sale_Detail[]
@@ -97,4 +97,10 @@ model Payment {
   date      DateTime
   promptpay Int
   Order     Order[]
+}
+
+enum Status {
+  PENDING
+  DOING
+  DONE
 }
