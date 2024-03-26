@@ -5,6 +5,8 @@ const notFound = require('./middlewares/notFound')
 const errorMiddleware = require('./middlewares/error')
 const authRoute = require('./routes/auth-route')
 const productRoute = require('./routes/product-route')
+const memberRoute = require('./routes/member-route')
+const orderRoute = require('./routes/order-route')
 
 
 const app = express()
@@ -15,6 +17,8 @@ app.use(express.json())
 // service
 app.use('/auth', authRoute)
 app.use('/product', productRoute)
+app.use('/member', memberRoute)
+app.use('/order', orderRoute)
 // app.use('/useronly', (req, res, next) => {
 //     res.json({msg: 'Private area'})
 // })

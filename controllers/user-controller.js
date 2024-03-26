@@ -16,24 +16,23 @@ exports.getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // ตรวจสอบว่า id เป็น integer
     if (isNaN(id)) {
       return res.status(400).json({ error: "Invalid ID" });
     }
 
-    // ค้นหา user โดยใช้ id
+   
     const user = await db.user.findUnique({
       where: {
         id: parseInt(id),
       },
     });
 
-    // ตรวจสอบว่า user ไม่ null
+   
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // ส่ง response user
+ 
     res.json(user);
   } catch (err) {
     next(err);
@@ -52,12 +51,12 @@ exports.updateUser = (['admin'], async (req, res, next) => {
     }
   });
 
-// ลบข้อมูลผู้ใช้
+
 exports.deleteUser = async (req, res, next) => {
-    const { id } = req.params; // รับค่า ID ผู้ใช้ที่ต้องการลบ
+    const { id } = req.params;
 
     try {
-        // ตรวจสอบว่ามีผู้ใช้ด้วย ID ที่ระบุหรือไม่
+      
         const user = await db.user.findUnique({
             where: {
                 id: parseInt(id),
